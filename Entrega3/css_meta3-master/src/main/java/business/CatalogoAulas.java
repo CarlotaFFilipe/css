@@ -1,0 +1,62 @@
+package business;
+import java.util.*;
+
+public class CatalogoAulas{
+    private Map<String,Aula> aulas;
+
+
+	public CatalogoAulas() {
+		this.aulas = new HashMap<>();
+	}
+	
+	public Aula getAula(String nome){
+		if(aulas.containsKey(nome))
+			return aulas.get(nome);
+		return null;
+	}
+
+
+
+	public void putAula(Date hora_inicio, List<String> dias, String nome, Date duracao, Modalidade mod){
+		if(this.aulas.containsKey(nome) || nome.length() != 6 || !string3Alfanumericos(nome) || nome.contains(" ")){
+			System.out.println("Nome invalido");
+			return;
+		}		
+		Date jan = new Date(0);
+		if(duracao.before(jan) || duracao.getTime()< mod.getDuracao().getTime()){
+			System.out.println("Duracao invalida.");
+			return;
+		}
+		Aula aula = new Aula(hora_inicio,dias,nome,duracao,mod);
+		this.aulas.put(nome, aula);
+        System.out.println("A aula foi bem criada!");
+	}
+
+
+	public List<Aula> getAulas(){
+		List<Aula> listAulas= new ArrayList<>();
+		for(Map.Entry<String,Aula> entry: this.aulas.entrySet()){
+			listAulas.add(entry.getValue());
+		}
+		return listAulas;
+	}
+
+	private boolean string3Alfanumericos(String s){
+		char c;
+		int countAlfabeto=0;
+		int countNumerico=0;
+		for(int i= 0; i<s.length();i++){
+			c = s.charAt(i);
+			if(Character.isLetter(c)){
+				countAlfabeto++;
+			}else if(Character.isDigit(c)){
+				countNumerico++;
+			}
+		}
+		if(countAlfabeto > 1 && countNumerico>1 && countAlfabeto+countNumerico>=3)
+			return true;
+		return false;
+
+	}
+	
+}
